@@ -1,2 +1,11 @@
-package com.oopsdev.designpattern.factorymethod.two;public class Main {
+package com.oopsdev.designpattern.factorymethod.two;
+
+public class Main {
+    public static void main(String[] args) {
+        ProductFactory factory = new ConcreteProductFactory();
+
+        Product electronics = factory.orderProduct("electronics");
+        Product clothing = factory.orderProduct("clothing");
+        Product book = factory.orderProduct("book");
+    }
 }

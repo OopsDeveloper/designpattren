@@ -1,2 +1,5 @@
-package com.oopsdev.designpattern.factorymethod.one;public interface Vehicle {
+package com.oopsdev.designpattern.factorymethod.one;
+
+public interface Vehicle {
+    void drive();
 }
