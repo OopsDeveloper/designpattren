@@ -1,0 +1,27 @@
+* 싱글톤 패턴
+특정 클래스의 객체가 단 하나만 존재해야 할 때 필요.
+다크모드 화이트모드 같은 테마에서 사용.
+생성자에 private를 붙여서 외부에서 new를 못하게 함.
+
+Static Inner Class를 사용하여 싱글톤 인스턴스의 지연 초기화(Lazy Initialization)와 Thread-Safe를 동시에 보장.
+
+* 변경 사항
+1. Static Inner Class 사용
+기존의 private static Theme instance; 대신, ThemeHolder라는 Static Inner Class를 추가했습니다. 이 클래스는 Theme의 싱글톤 인스턴스를 포함하고 있습니다.
+private static class ThemeHolder {
+    private static final Theme INSTANCE = new Theme();
+}
+
+2. Thread-Safe 보장
+기존 코드에서 getInstance()는 if (instance == null)로 싱글톤 인스턴스를 생성했지만, 이 방식은 멀티스레드 환경에서 문제가 발생할 수 있습니다.
+Static Inner Class 방식은 JVM이 클래스 로딩과 초기화를 Thread-Safe하게 처리하므로, 별도의 동기화 코드 없이 안전합니다.
+
+* 주요 장점
+1. Lazy Initialization
+ThemeHolder 클래스는 Theme.getInstance()가 호출될 때 로딩되므로, 싱글톤 인스턴스는 실제로 필요할 때 생성됩니다.
+
+2. Thread-Safe
+JVM이 클래스 로딩과 초기화를 보장하므로, 멀티스레드 환경에서도 문제 없이 동작합니다.
+
+3. 간결함
+Static Inner Class 방식을 사용하면 기존의 동기화 처리나 Double-Check Locking과 같은 복잡한 코드를 작성할 필요가 없습니다.
