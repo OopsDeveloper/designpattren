@@ -1,0 +1,31 @@
+Concrete라는 이름은 디자인 패턴에서 구체적인 구현(concrete implementation)을 의미합니다.
+즉, 인터페이스나 추상 클래스로 정의된 동작이나 계약을 실제로 구현하는 구체적인 클래스를 뜻합니다.
+
+• 그림에서 ConcreteAggregate와 ConcreteIterator
+ • ConcreteAggregate:
+    Aggregate 인터페이스를 구현한 구체적인 집합 클래스입니다.
+    내부적으로 데이터 구조를 가지고 있으며, iterator() 메서드를 구현해서 Iterator 객체를 생성합니다.
+ • ConcreteIterator:
+    Iterator 인터페이스를 구현한 구체적인 반복자 클래스입니다.
+    특정 Aggregate의 요소들을 순차적으로 접근할 수 있도록 hasNext()와 next() 메서드를 구현합니다.
+• 왜 Concrete라는 이름을 사용하는가?
+ 1. 구체적(Concrete):
+    • Aggregate와 Iterator는 일반적으로 추상적인 인터페이스로 정의됩니다. 이러한 추상 인터페이스를 구현한 실제 클래스를 구분하기 위해 Concrete라는 이름을 붙입니다.
+ 2. 확장 가능성:
+    • 디자인 패턴의 원칙에 따라 추상화와 구체화를 분리하면, 이후에 Concrete 클래스들을 쉽게 교체하거나 확장할 수 있습니다.
+
+요약
+Concrete라는 이름은 단순히 "구현된 클래스"라는 것을 강조하는 명명 규칙입니다. 이 이름을 통해 인터페이스(추상적인 정의)와 실제 구현 클래스(구체적인 정의)를 명확히 구분할 수 있습니다.
+
+
+
+*Iterator 패턴 사용하는 이유
+Iterator를 사용함으로써 구현과 분리하여 반복할 수 있기 때문
+while (it.hasNext()) {
+    Book book = it.next();
+}
+이 코드보면 hasNext와 next라는 Iterator 메소드뿐이고 BookShelf 구현에 사용된 메소드는 호출되지 않는다.
+결국 while 루프는 BookShelf 구현에 의존하지 않는다.
+BookShelf를 구현한 사람이 배열로 책을 관리하는 것을 그만두고 ArrayList를 사용하도록 프로그램을 변경했다고 해도
+while 루프는 변경하지 않아도 동작한다.
+
