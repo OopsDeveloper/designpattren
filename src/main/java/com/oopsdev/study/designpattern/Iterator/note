@@ -1,3 +1,21 @@
+*Iterator 패턴
+반복문에서 변수 i의 기능을 추상화하여 일반화 한것.
+무엇인가 많이 모여 있을 때 이를 순서대로 가리키며 전체를 검색하고 처리를 반복하는 것.
+
+*Iterator 패턴 사용하는 이유
+Iterator를 사용함으로써 구현과 분리하여 반복할 수 있기 때문
+while (it.hasNext()) {
+    Book book = it.next();
+}
+이 코드보면 hasNext와 next라는 Iterator 메소드뿐이고 BookShelf 구현에 사용된 메소드는 호출되지 않는다.
+결국 while 루프는 BookShelf 구현에 의존하지 않는다.
+BookShelf를 구현한 사람이 배열로 책을 관리하는 것을 그만두고 ArrayList를 사용하도록 프로그램을 변경했다고 해도
+while 루프는 변경하지 않아도 동작한다.
+
+디자인 패턴은 재사용을 촉진하는데 클래스를 부품처럼 사용할 수 있게 만들어 어떤 한 부품을 수정하더라도 다른 부품을 수정할 일이 적어진다는 것.
+
+
+
 Concrete라는 이름은 디자인 패턴에서 구체적인 구현(concrete implementation)을 의미합니다.
 즉, 인터페이스나 추상 클래스로 정의된 동작이나 계약을 실제로 구현하는 구체적인 클래스를 뜻합니다.
 
@@ -19,13 +37,5 @@ Concrete라는 이름은 단순히 "구현된 클래스"라는 것을 강조하�
 
 
 
-*Iterator 패턴 사용하는 이유
-Iterator를 사용함으로써 구현과 분리하여 반복할 수 있기 때문
-while (it.hasNext()) {
-    Book book = it.next();
-}
-이 코드보면 hasNext와 next라는 Iterator 메소드뿐이고 BookShelf 구현에 사용된 메소드는 호출되지 않는다.
-결국 while 루프는 BookShelf 구현에 의존하지 않는다.
-BookShelf를 구현한 사람이 배열로 책을 관리하는 것을 그만두고 ArrayList를 사용하도록 프로그램을 변경했다고 해도
-while 루프는 변경하지 않아도 동작한다.
+
 
