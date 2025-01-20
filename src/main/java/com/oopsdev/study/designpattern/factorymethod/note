@@ -1,0 +1,66 @@
+*Factory Method 패턴
+객체 생성 단계를 템플릿 메소드에서 분리한 것.
+인스턴스를 생성하는 Factory를 Template Method 패턴으로 구성한 것.
+객체 생성 로직을 서브클래스에 캡슐화하여 클라이언트 코드의 중복을 제거.
+객체 생성 로직을 서브클래스에서 오버라이드하는 메소드로 캡슐화하여, 객체 생성 로직을 한 곳에 모아둡니다
+클라이언트는 이 메소드를 호출해 객체를 생성하므로, 클라이언트 코드에 객체 생성 로직이 중복되지 않습니다.
+
+* 팩토리 메소드 패턴을 많이 사용하는 경우
+1. 객체 생성 로직이 복잡하거나 변경될 가능성이 있을 때
+    • 객체 생성 로직이 복잡하거나 특정 조건에 따라 다른 객체를 생성해야 할 경우.
+2. 클래스 계층 구조에 따라 적합한 객체를 생성해야 할 때
+    • GUI 라이브러리에서 운영 체제에 따라 다른 버튼(WindowsButton, MacButton) 객체를 생성해야 하는 경우.
+3. 코드 확장성이 중요할 때
+    • 새로운 결제 방식(카드, 페이팔, 비트코인 등)이 추가될 때, 각 결제 방식에 따라 다른 객체를 생성하는 로직.
+4. 객체의 라이프사이클 관리가 필요할 때
+    • 객체 생성을 제어하거나 재사용해야 하는 상황
+    • 예를 들어, 특정 객체를 캐싱하거나 풀링(pooling)하여 객체 생성을 최적화할 때 사용
+    • 연결 풀(Connection Pool)에서 데이터베이스 연결 객체를 관리할 때
+5. 종속성을 줄이고 클라이언트 코드를 단순화하고자 할 때
+    • 클라이언트 코드에서 구체적인 객체 생성에 대한 종속성을 줄이고, 인터페이스나 추상 클래스와만 상호작용하도록 만들고자 할 때 유용합니다.
+    • 로깅 라이브러리에서 다양한 로거(FileLogger, ConsoleLogger)를 지원하면서 클라이언트는 Logger 인터페이스만 알도록 설계.
+
+* 추가 예제
+    - if else 로직
+    if (osType.equals("Windows")) {
+        button = new WindowsButton();
+    } else if (osType.equals("Mac")) {
+        button = new MacButton();
+    } else {
+        button = new DefaultButton();
+    }
+    button.render();
+
+    - if else 로직을 팩토리 메서드로 변경
+    abstract class Dialog {
+        // 템플릿 메소드
+        public void renderWindow() {
+            // 공통 로직
+            Button okButton = createButton();
+            okButton.render();
+        }
+
+        // 팩토리 메소드
+        protected abstract Button createButton();
+    }
+
+    class WindowsDialog extends Dialog {
+        @Override
+        protected Button createButton() {
+            return new WindowsButton();
+        }
+    }
+
+    class MacDialog extends Dialog {
+        @Override
+        protected Button createButton() {
+            return new MacButton();
+        }
+    }
+
+// 클라이언트 코드
+Dialog dialog = new WindowsDialog(); // 또는 MacDialog
+dialog.renderWindow();
+
+
+
