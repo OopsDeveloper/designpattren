@@ -1,5 +1,6 @@
 package com.oopsdev.designpattern.bridge.two;
 
+// 추상화 부분
 class EncryptedMessage extends Message {
     public EncryptedMessage(MessageSender messageSender) {
         super(messageSender);
