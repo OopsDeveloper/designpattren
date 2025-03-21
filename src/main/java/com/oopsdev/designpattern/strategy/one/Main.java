@@ -4,10 +4,10 @@ public class Main {
     public static void main(String[] args) {
         ShoppingCart cart = new ShoppingCart();
 
-        cart.setPaymentStrategy(new CreditCardPayment("John Doe", "1234567890123456"));
+        cart.setPaymentStrategy(new CreditCardPayment("Park Fender", "1234567890123456"));
         cart.checkout(100);
 
-        cart.setPaymentStrategy(new PayPalPayment("johndoe@example.com"));
+        cart.setPaymentStrategy(new PayPalPayment("parkfender@example.com"));
         cart.checkout(200);
     }
 }

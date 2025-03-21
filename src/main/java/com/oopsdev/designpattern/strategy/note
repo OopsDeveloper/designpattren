@@ -1,8 +1,137 @@
 * 전략 패턴
 전략들을 여러개 두고 이를 필요에 따라 갈아끼울 수 있도록 하는 패턴.
 즉 어떤 일을 하는 것에 대한 여러 클래스로 만들고 필요에 따라 선택해서 쓰는 것이라 생각하면 됨.
+
 이 패턴은 특정 기능을 수행하기 위한 여러 알고리즘을 별도의 캡슐로 분리함으로써
 이처럼 코드 실행중 이를 얼마든지 교체할 수 있도록 해준다.
 새로운 방식이 추가되어야 한다면 또 다른 전략 클래스를 만들어 쉽게 확장할 수 있고
 이들을 다른 곳에 재사용하는 것도 가능해진다.
 SOLID의 개방/폐쇠 원칙을 준수하는 코드
+
+* 전략 패턴과 팩토리 메서드 패턴 차이점 : 동작의 교체와 객체의 생성 위임
+1.전략패턴(동작의 교체)
+=> 실행 중에 알고리즘이나 동작을 변경해야 할 때.
+=> 다양한 행위(전략)가 필요할 때
+- Context: 전략을 사용하는 주체
+- Strategy: 인터페이스 (알고리즘의 공통 인터페이스)
+- ConcreteStrategy: 실제 알고리즘 구현체들
+
+ex)
+// 전략 인터페이스
+public interface PaymentStrategy {
+    void pay(int amount);
+}
+
+// 전략 구현체 1
+@Component("card")
+public class CardPaymentStrategy implements PaymentStrategy {
+    public void pay(int amount) {
+        System.out.println("카드로 결제: " + amount + "원");
+    }
+}
+
+// 전략 구현체 2
+@Component("paypal")
+public class PaypalPaymentStrategy implements PaymentStrategy {
+    public void pay(int amount) {
+        System.out.println("PayPal로 결제: " + amount + "원");
+    }
+}
+
+// 컨텍스트 서비스
+@Service
+public class PaymentService {
+
+    private final Map<String, PaymentStrategy> strategyMap;
+
+    public PaymentService(Map<String, PaymentStrategy> strategyMap) {
+        this.strategyMap = strategyMap;
+    }
+
+    public void pay(String type, int amount) {
+        PaymentStrategy strategy = strategyMap.get(type);
+        if (strategy == null) {
+            throw new IllegalArgumentException("알 수 없는 결제 방식: " + type);
+        }
+        strategy.pay(amount);
+    }
+}
+
+//컨트롤러
+paymentService.pay("card", 10000);
+paymentService.pay("paypal", 20000);
+
+
+2.팩토리 메서드 패턴(객체의 생성)
+=> 객체 생성을 서브클래스가 결정해야 할 때
+=> 객체 생성 코드를 클라이언트 코드에서 분리하고 싶을 때.
+=> 객체를 동적으로 생성할 때
+- Product: 생성될 객체의 인터페이스
+- ConcreteProduct: 실제 생성될 객체
+- Creator: 팩토리 메서드를 선언한 추상 클래스
+- ConcreteCreator: 팩토리 메서드를 오버라이딩하여 실제 객체를 생성하는 클래스
+
+ex1)
+abstract class Dialog {
+    public void renderWindow() {
+        Button okButton = createButton();
+        okButton.render();
+    }
+
+    // 팩토리 메서드
+    protected abstract Button createButton();
+}
+
+class WindowsDialog extends Dialog {
+    protected Button createButton() {
+        return new WindowsButton();
+    }
+}
+
+class WebDialog extends Dialog {
+    protected Button createButton() {
+        return new HTMLButton();
+    }
+}
+
+ex2)
+// 제품 인터페이스
+public interface Notification {
+    void send(String message);
+}
+
+// 제품 구현체 1
+public class SlackNotification implements Notification {
+    public void send(String message) {
+        System.out.println("Slack 전송: " + message);
+    }
+}
+
+// 제품 구현체 2
+public class EmailNotification implements Notification {
+    public void send(String message) {
+        System.out.println("Email 전송: " + message);
+    }
+}
+
+// 팩토리 클래스
+@Component
+public class NotificationFactory {
+
+    public Notification createNotification(String type) {
+        switch (type.toLowerCase()) {
+            case "slack": return new SlackNotification();
+            case "email": return new EmailNotification();
+            default: throw new IllegalArgumentException("알 수 없는 알림 타입: " + type);
+        }
+    }
+}
+
+//컨트롤러
+@Autowired
+NotificationFactory notificationFactory;
+
+public void notifyUser(String type, String message) {
+    Notification notification = notificationFactory.createNotification(type);
+    notification.send(message);
+}
