@@ -9,5 +9,13 @@ public class Main {
 
         cart.setPaymentStrategy(new PayPalPayment("parkfender@example.com"));
         cart.checkout(200);
+
+        System.out.println("------------------------------------------");
+
+        ShoppingCart cart2 = new ShoppingCart();
+
+        cart2.setPaymentStrategy(new CreditCardPayment("Park Fender2", "1234567890123456"));
+        cart2.checkout(500);
+
     }
 }
